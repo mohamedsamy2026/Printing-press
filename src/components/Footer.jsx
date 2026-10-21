@@ -68,7 +68,7 @@ export default function Footer() {
               {t("foot.h2")}
             </p>
             <h4 className={h4}>{t("foot.follow")}</h4>
-            <div className="flex gap-2.5">
+            <div className="flex gap-3 mb-6">
               {[
                 [SITE.social.instagram, "Instagram", FaInstagram],
                 [SITE.social.tiktok, "TikTok", FaTiktok],

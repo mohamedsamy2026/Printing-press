@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useRef , useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay, Keyboard } from "swiper/modules";
+import { Autoplay, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FaWhatsapp, FaStar, FaQuoteRight } from "react-icons/fa";
-import { FiPhone, FiArrowRight, FiChevronDown } from "react-icons/fi";
+import {
+  FiPhone,
+  FiArrowRight,
+  FiChevronDown,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import Reveal from "../components/Reveal.jsx";
 import Lightbox from "../components/Lightbox.jsx";
 import { useApp } from "../i18n.jsx";
@@ -36,6 +42,15 @@ const Btns = ({ t, band }) => (
 export default function Home() {
   const { t, lang } = useApp(),
     [lb, setLb] = useState(null);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    const autoplay = swiperRef.current?.autoplay;
+    if (!autoplay) return;
+    if (lb !== null)
+      autoplay.stop(); // الصورة اتفتحت: وقّف
+    else autoplay.start(); // الصورة اتقفلت: شغّل
+  }, [lb]);
   return (
     <main>
       <section
@@ -147,42 +162,64 @@ export default function Home() {
             title={t("works.title")}
             sub={t("works.sub")}
           />
-          <Swiper
-            key={lang}
-            dir={lang === "ar" ? "rtl" : "ltr"}
-            modules={[Navigation, Autoplay, Keyboard]}
-            navigation
-            keyboard
-            loop
-            spaceBetween={20}
-            autoplay={{
-              delay: 3500,
-              pauseOnMouseEnter: true,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              0: { slidesPerView: 1.15 },
-              640: { slidesPerView: 2.2 },
-              1024: { slidesPerView: 3 },
-              1440: { slidesPerView: 3.5 },
-            }}
-          >
-            {WORKS.map((src, i) => (
-              <SwiperSlide key={src}>
-                <button
-                  className="group block aspect-[4/5] w-full overflow-hidden rounded-card bg-surface"
-                  onClick={() => setLb(i)}
-                >
-                  <img
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                    src={src}
-                    alt={altFor("works", i, lang)}
-                    loading={i < 3 ? "eager" : "lazy"}
-                  />
-                </button>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+
+          <div className="relative px-10 sm:px-12">
+            <Swiper
+              key={lang}
+              dir={lang === "ar" ? "rtl" : "ltr"}
+              onSwiper={(s) => (swiperRef.current = s)}
+              modules={[Autoplay, Keyboard]}
+              keyboard
+              loop
+              slidesPerView={1}
+              spaceBetween={16}
+              autoplay={{
+                delay: 3500,
+                pauseOnMouseEnter: true,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                650: { slidesPerView: 2, spaceBetween: 20 },
+                800: { slidesPerView: 3, spaceBetween: 24 },
+                1280: { slidesPerView: 4, spaceBetween: 24 },
+              }}
+            >
+              {WORKS.map((src, i) => (
+                <SwiperSlide key={src}>
+                  <button
+                    className="group block aspect-[4/5] w-full overflow-hidden rounded-card bg-surface"
+                    onClick={() => setLb(i)}
+                  >
+                    <img
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                      src={src}
+                      alt={altFor("works", i, lang)}
+                      loading={i < 3 ? "eager" : "lazy"}
+                    />
+                  </button>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            <button
+              type="button"
+              aria-label={t("prev")}
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="bg-brand text-white absolute start-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card  duration-300 hover:bg-orange-700"
+            >
+              <FiChevronLeft className="rtl:-scale-x-100 text-2xl" />
+            </button>
+
+            <button
+              type="button"
+              aria-label={t("next")}
+              onClick={() => swiperRef.current?.slideNext()}
+              className="bg-brand text-white absolute end-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card duration-300 hover:bg-orange-700"
+            >
+              <FiChevronRight className="rtl:-scale-x-100 text-2xl" />
+            </button>
+          </div>
+
           <Lightbox
             items={WORKS}
             index={lb}

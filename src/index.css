@@ -49,16 +49,3 @@
     }
   }
 }
-/* Swiper: ألوان الأسهم فقط (مكتبة خارجية) */
-.swiper {
-  --swiper-navigation-color: #fff;
-  --swiper-navigation-size: 20px;
-}
-.swiper-button-prev,
-.swiper-button-next {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--primary);
-  box-shadow: var(--shadow);
-}
