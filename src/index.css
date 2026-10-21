@@ -2,16 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{--bg:#fff;--surface:#f7f4f0;--text:#161616;--muted:#5e5a55;--border:#e6e0d9;--primary:#f15a22;--primary-h:#d94a14;--ptext:#c2410c;--onp:#fff;--shadow:0 10px 30px rgba(0,0,0,.08);color-scheme:light}
-[data-theme="dark"]{--bg:#0e0e10;--surface:#18181b;--text:#f4f4f5;--muted:#a1a1a8;--border:#2e2e33;--primary:#ff6a2f;--primary-h:#ff8350;--ptext:#ff8350;--onp:#111;--shadow:0 10px 30px rgba(0,0,0,.5);color-scheme:dark}
+:root {
+  --bg: #e6e8ef;
+  --surface: #f7f4f0;
+  --text: #161616;
+  --muted: #5e5a55;
+  --border: #e6e0d9;
+  --primary: #f15a22;
+  --primary-h: #d94a14;
+  --ptext: #c2410c;
+  --onp: #fff;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #0e0e10;
+  --surface: #18181b;
+  --text: #f4f4f5;
+  --muted: #a1a1a8;
+  --border: #2e2e33;
+  --primary: #ff6a2f;
+  --primary-h: #ff8350;
+  --ptext: #ff8350;
+  --onp: #111;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
 
-@layer base{
-  html{scroll-behavior:smooth}
-  body{@apply bg-bg font-ar leading-relaxed text-ink overflow-x-hidden transition-colors duration-300}
-  html[lang="en"] body{@apply font-en}
-  :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg font-ar leading-relaxed text-ink overflow-x-hidden transition-colors duration-300;
+  }
+  html[lang="en"] body {
+    @apply font-en;
+  }
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 /* Swiper: ألوان الأسهم فقط (مكتبة خارجية) */
-.swiper{--swiper-navigation-color:#fff;--swiper-navigation-size:20px}
-.swiper-button-prev,.swiper-button-next{width:44px;height:44px;border-radius:50%;background:var(--primary);box-shadow:var(--shadow)}
+.swiper {
+  --swiper-navigation-color: #fff;
+  --swiper-navigation-size: 20px;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: var(--shadow);
+}
