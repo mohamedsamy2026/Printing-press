@@ -26,6 +26,6 @@ export const SERVICES = [
 ]
 
 export const WORKS = Array.from(
-  { length: 25 },
+  { length: 33 },
   (_, i) => `/images/works/work-${String(i + 1).padStart(2, '0')}.jpg`
 )
