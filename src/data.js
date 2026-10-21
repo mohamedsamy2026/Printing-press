@@ -20,7 +20,7 @@ const imgs = (dir, n, cover) => [
 
 export const SERVICES = [
   { slug: 'papers', dir: 'pap', images: imgs('pap', 12, 13) },
-  { slug: 'stickers', dir: 'stk', images: imgs('stk', 6, 7) },
+  { slug: 'stickers', dir: 'stk', images: imgs('stk', 5,6) },
   { slug: 'acrylic', dir: 'acr', images: imgs('acr', 9, 10) },
   { slug: 'signs', dir: 'sgn', images: imgs('sgn', 5, 6) }
 ]

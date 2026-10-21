@@ -1,5 +1,5 @@
 // Imports
-import { useState, useRef , useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard } from "swiper/modules";
@@ -88,7 +88,7 @@ export default function Home() {
       </section>
 
       <section id="about" className={sec}>
-        <div className={`${C} grid items-center gap-10 md:grid-cols-2`}>
+        <div className={`${C}`}>
           <Reveal>
             <span className={kick}>{t("about.k")}</span>
             <h2 className={H2}>{t("about.title")}</h2>
@@ -107,14 +107,7 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
-          <Reveal delay={120}>
-            <img
-              className="w-full rounded-card shadow-card"
-              src="/images/pap/pap-13-made.jpg"
-              alt={t("brand")}
-              loading="lazy"
-            />
-          </Reveal>
+       
         </div>
       </section>
 
@@ -128,6 +121,9 @@ export default function Home() {
                   to={`/services/${s.slug}`}
                   className="group block h-full overflow-hidden rounded-card border border-line bg-bg shadow-card transition duration-300 hover:-translate-y-1.5"
                 >
+                  <h3 className="px-[18px] pb-3 pt-[18px] text-xl font-bold">
+                    {t(`services.items.${s.slug}.title`)}
+                  </h3>
                   <div className="aspect-[4/3] overflow-hidden bg-surface">
                     <img
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
@@ -137,10 +133,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-[18px]">
-                    <h3 className="text-xl font-bold">
-                      {t(`services.items.${s.slug}.title`)}
-                    </h3>
-                    <p className="my-2 mb-3 text-[.92rem] text-muted">
+                    <p className="mb-3 text-[.92rem] text-muted">
                       {t(`services.items.${s.slug}.list`).join(" – ")}
                     </p>
                     <span className="inline-flex items-center gap-1.5 font-bold text-brand-t">
@@ -172,7 +165,7 @@ export default function Home() {
               modules={[Autoplay, Keyboard]}
               keyboard
               loop
-              slidesPerView={1}
+              slidesPerView={2}
               spaceBetween={16}
               autoplay={{
                 delay: 3500,
@@ -180,9 +173,9 @@ export default function Home() {
                 disableOnInteraction: false,
               }}
               breakpoints={{
-                650: { slidesPerView: 2, spaceBetween: 20 },
-                800: { slidesPerView: 3, spaceBetween: 24 },
-                1280: { slidesPerView: 4, spaceBetween: 24 },
+                400: { slidesPerView: 2, spaceBetween: 20 },
+                700: { slidesPerView: 3, spaceBetween: 24 },
+                1000: { slidesPerView: 4, spaceBetween: 24 },
               }}
             >
               {WORKS.map((src, i) => (
