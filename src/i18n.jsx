@@ -49,38 +49,6 @@ const ar = {
     photos: "صورة",
     more: "خدمات أخرى",
     ask: "عاجبك شغلنا؟ اطلب الآن",
-    items: {
-      papers: {
-        title: "الورقيات",
-        list: [
-          "كروت شخصية",
-          "فولدرات",
-          "ظروف",
-          "أوراق رسمية",
-          "بروشور",
-          "علب منتجات",
-          "نوت بوك",
-        ],
-      },
-      stickers: {
-        title: "الاستيكرات",
-        list: [
-          "استيكرات بأنواعها",
-          "يوفي",
-          "DTF",
-          "استيكرات سيارات",
-          "استيكر جداري",
-        ],
-      },
-      acrylic: {
-        title: "الإكريليك",
-        list: ["بوكسات إكريليك", "ستاند إكريليك", "لوحات إرشادية"],
-      },
-      signs: {
-        title: "اللوحات",
-        list: ["لوحات إعلانية", "لوحات إرشادية", "أحرف بارزة", "لوحات نيون"],
-      },
-    },
   },
   works: {
     k: "معرض الأعمال",
@@ -101,14 +69,6 @@ const ar = {
   rev: {
     k: "آراء العملاء",
     title: "ثقة عملائنا بنا",
-    list: [
-      { n: "نور محمد", t: "جيد جدًا، شكرًا" },
-      { n: "سعيد محمد", t: "ممتاز، شكرًا لكم" },
-      { n: "عبدالله", t: "الله يعطيكم العافية، شغل مرتب وسريع" },
-      { n: "أحمد محمد", t: "ممتاز، الله يعطيكم العافية" },
-      { n: "هاشم محمد", t: "خدمة ممتازة، شكرًا جزيلًا" },
-      { n: "طلال الحمد", t: "تجربة ممتازة وتعامل رائع، شكرًا لكم" },
-    ],
   },
   band: { title: "جاهز تطبع فكرتك؟", p: "تواصل معنا الآن ونبدأ بتنفيذ طلبك." },
   foot: {
@@ -116,8 +76,6 @@ const ar = {
     links: "روابط سريعة",
     contact: "تواصل معنا",
     hours: "أوقات الدوام",
-    h1: "السبت إلى الخميس: 10 ص – 7 م",
-    h2: "الجمعة: إجازة",
     follow: "تابعونا على",
     rights: "جميع الحقوق محفوظة.",
   },
@@ -179,43 +137,6 @@ const en = {
     photos: "photos",
     more: "Other services",
     ask: "Like our work? Order now",
-    items: {
-      papers: {
-        title: "Stationery",
-        list: [
-          "Business cards",
-          "Folders",
-          "Envelopes",
-          "Letterheads",
-          "Brochures",
-          "Product boxes",
-          "Notebooks",
-        ],
-      },
-      stickers: {
-        title: "Stickers",
-        list: [
-          "Stickers of all kinds",
-          "UV",
-          "DTF",
-          "Car stickers",
-          "Wall stickers",
-        ],
-      },
-      acrylic: {
-        title: "Acrylic",
-        list: ["Acrylic boxes", "Acrylic stands", "Directional signs"],
-      },
-      signs: {
-        title: "Signage",
-        list: [
-          "Advertising signs",
-          "Directional signs",
-          "Raised letters",
-          "Neon signs",
-        ],
-      },
-    },
   },
   works: {
     k: "Portfolio",
@@ -236,17 +157,6 @@ const en = {
   rev: {
     k: "Client reviews",
     title: "Our clients' trust",
-    list: [
-      { n: "Nour Mohammed", t: "Very good, thank you" },
-      { n: "Saeed Mohammed", t: "Excellent, thank you" },
-      { n: "Abdullah", t: "God bless you — neat and fast work" },
-      { n: "Ahmed Mohammed", t: "Excellent, God bless you" },
-      { n: "Hashem Mohammed", t: "Excellent service, thank you very much" },
-      {
-        n: "Talal Al-Hamad",
-        t: "Excellent experience and wonderful service, thank you",
-      },
-    ],
   },
   band: {
     title: "Ready to print your idea?",
@@ -257,8 +167,6 @@ const en = {
     links: "Quick links",
     contact: "Contact us",
     hours: "Working hours",
-    h1: "Saturday – Thursday: 10 AM – 7 PM",
-    h2: "Friday: Closed",
     follow: "Follow us",
     rights: "All rights reserved.",
   },

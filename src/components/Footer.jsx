@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaWhatsapp, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import { FiPhone, FiMail, FiArrowUp } from "react-icons/fi";
 import { useApp } from "../i18n.jsx";
-import { SITE, SERVICES, waLink } from "../data.js";
+import { useSite } from "../context/SiteData.jsx";
+import { pick, lines, safeUrl } from "../lib/text.js";
+import { platformOf } from "../lib/socials.js";
 import { C } from "../ui.js";
 const a =
   "flex items-center gap-2.5 py-1 text-neutral-200 transition hover:text-brand";
 const h4 = "mb-2.5 font-bold text-brand";
 const ltr = "inline-block [direction:ltr] [unicode-bidi:isolate]";
 export default function Footer() {
-  const { t } = useApp(),
+  const { t, lang } = useApp(),
+    { settings, socials, services, contact } = useSite(),
     [top, setTop] = useState(false);
   useEffect(() => {
     const f = () => setTop(window.scrollY > 600);
@@ -39,51 +42,64 @@ export default function Footer() {
           </div>
           <div>
             <h4 className={h4}>{t("foot.links")}</h4>
-            {SERVICES.map((s) => (
+            {services.map((s) => (
               <Link key={s.slug} className={a} to={`/services/${s.slug}`}>
-                {t(`services.items.${s.slug}.title`)}
+                {pick(s.title_ar, s.title_en, lang)}
               </Link>
             ))}
           </div>
           <div>
             <h4 className={h4}>{t("foot.contact")}</h4>
-            <a className={a} href={waLink(t("waMsg"))} {...ext}>
-              <FaWhatsapp />
-              <span className={ltr}>{SITE.waShow}</span>
-            </a>
-            <a className={a} href={SITE.callHref}>
-              <FiPhone />
-              <span className={ltr}>{SITE.call}</span>
-            </a>
-            <a className={a} href={`mailto:${SITE.email}`}>
-              <FiMail />
-              <span className={ltr}>{SITE.email}</span>
-            </a>
+            {contact.waShow && (
+              <a className={a} href={contact.wa(t("waMsg"))} {...ext}>
+                <FaWhatsapp />
+                <span className={ltr}>{contact.waShow}</span>
+              </a>
+            )}
+            {contact.callShow && (
+              <a className={a} href={contact.callHref}>
+                <FiPhone />
+                <span className={ltr}>{contact.callShow}</span>
+              </a>
+            )}
+            {contact.email && (
+              <a className={a} href={`mailto:${contact.email}`}>
+                <FiMail />
+                <span className={ltr}>{contact.email}</span>
+              </a>
+            )}
           </div>
           <div>
             <h4 className={h4}>{t("foot.hours")}</h4>
             <p className="mb-5 text-[.93rem] text-neutral-300">
-              {t("foot.h1")}
-              <br />
-              {t("foot.h2")}
-            </p>
-            <h4 className={h4}>{t("foot.follow")}</h4>
-            <div className="flex gap-3 mb-6">
-              {[
-                [SITE.social.instagram, "Instagram", FaInstagram],
-                [SITE.social.tiktok, "TikTok", FaTiktok],
-              ].map(([href, l, I]) => (
-                <a
-                  key={l}
-                  href={href}
-                  aria-label={l}
-                  {...ext}
-                  className="grid h-[42px] w-[42px] place-items-center rounded-xl bg-white/10 text-xl transition hover:bg-brand"
-                >
-                  <I />
-                </a>
+              {lines(pick(settings.hours_ar, settings.hours_en, lang)).map((l, i) => (
+                <span key={i} className="block">
+                  {l}
+                </span>
               ))}
-            </div>
+            </p>
+            {socials.length > 0 && (
+              <>
+                <h4 className={h4}>{t("foot.follow")}</h4>
+                <div className="mb-6 flex flex-wrap gap-3">
+                  {socials.map((x) => {
+                    const p = platformOf(x.platform);
+                    if (!p) return null;
+                    return (
+                      <a
+                        key={x.id}
+                        href={safeUrl(x.url)}
+                        aria-label={p.label}
+                        {...ext}
+                        className="grid h-[42px] w-[42px] place-items-center rounded-xl bg-white/10 text-xl transition hover:bg-brand"
+                      >
+                        <p.Icon />
+                      </a>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div className="mt-10 border-t border-white/10 px-4 py-4 text-center text-sm text-neutral-400">
@@ -101,7 +117,7 @@ export default function Footer() {
       )}
       <a
         className="fixed bottom-5 right-5 z-[60] grid h-[58px] w-[58px] animate-wa place-items-center rounded-full bg-[#25d366] text-[2rem] text-white shadow-lg motion-reduce:animate-none"
-        href={waLink(t("waMsg"))}
+        href={contact.wa(t("waMsg"))}
         {...ext}
         aria-label={t("tip.wa")}
       >

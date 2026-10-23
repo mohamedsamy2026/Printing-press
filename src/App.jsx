@@ -1,11 +1,13 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
 import ServicePage from "./pages/ServicePage.jsx";
 import { useApp } from "./i18n.jsx";
 import { C, btnP } from "./ui.js";
+
+const AdminApp = lazy(() => import("./admin/AdminApp.jsx"));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -31,7 +33,7 @@ function NotFound() {
     </main>
   );
 }
-export default function App() {
+function PublicSite() {
   return (
     <>
       <ScrollToTop />
@@ -43,5 +45,20 @@ export default function App() {
       </Routes>
       <Footer />
     </>
+  );
+}
+export default function App() {
+  return (
+    <Routes>
+      <Route
+        path="/admin/*"
+        element={
+          <Suspense fallback={<div className="grid min-h-svh place-items-center text-muted">...</div>}>
+            <AdminApp />
+          </Suspense>
+        }
+      />
+      <Route path="*" element={<PublicSite />} />
+    </Routes>
   );
 }

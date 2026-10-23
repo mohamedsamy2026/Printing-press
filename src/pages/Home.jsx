@@ -16,8 +16,9 @@ import {
 import Reveal from "../components/Reveal.jsx";
 import Lightbox from "../components/Lightbox.jsx";
 import { useApp } from "../i18n.jsx";
-import { SITE, SERVICES, WORKS, waLink } from "../data.js";
-import { altFor } from "../alts.js";
+import { useSite } from "../context/SiteData.jsx";
+import { mediaUrl } from "../lib/media.js";
+import { pick, lines } from "../lib/text.js";
 import { C, btnP, btnO, btnW, kick, bar, H2, sec } from "../ui.js";
 const ext = { target: "_blank", rel: "noopener noreferrer" };
 const Head = ({ k, title, sub }) => (
@@ -28,13 +29,16 @@ const Head = ({ k, title, sub }) => (
     <i className={`${bar} mx-auto`} />
   </Reveal>
 );
-const Btns = ({ t, band }) => (
+const Skel = ({ className = "" }) => (
+  <div className={`animate-pulse rounded-card bg-line/60 ${className}`} />
+);
+const Btns = ({ t, band, contact }) => (
   <div className={`mt-7 flex flex-wrap gap-4 ${band ? "justify-center" : ""}`}>
-    <a className={band ? btnW : btnP} href={waLink(t("waMsg"))} {...ext}>
+    <a className={band ? btnW : btnP} href={contact.wa(t("waMsg"))} {...ext}>
       <FaWhatsapp />
       {t("cta.wa")}
     </a>
-    <a className={band ? `${btnO} text-inherit` : btnO} href={SITE.callHref}>
+    <a className={band ? `${btnO} text-inherit` : btnO} href={contact.callHref}>
       <FiPhone />
       {t("cta.call")}
     </a>
@@ -42,7 +46,10 @@ const Btns = ({ t, band }) => (
 );
 export default function Home() {
   const { t, lang } = useApp(),
+    { services, works, reviews, loading, contact } = useSite(),
     [lb, setLb] = useState(null);
+  const workUrls = works.map((w) => mediaUrl(w.path));
+  const workAlts = works.map((w, i) => pick(w.alt_ar, w.alt_en, lang) || `${t("works.alt")} ${i + 1}`);
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -70,7 +77,7 @@ export default function Home() {
             {t("hero.title")}
           </h1>
           <p className="max-w-[60ch] text-lg text-neutral-200">{t("hero.p")}</p>
-          <Btns t={t} />
+          <Btns t={t} contact={contact} />
         </div>
         <a
           className="absolute inset-x-0 bottom-6 mx-auto grid h-11 w-11 animate-bob place-items-center text-2xl motion-reduce:animate-none"
@@ -115,40 +122,49 @@ export default function Home() {
         <div className={C}>
           <Head k={t("services.k")} title={t("services.title")} />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 80} className="h-full">
-                <Link
-                  to={`/services/${s.slug}`}
-                  className="group block h-full overflow-hidden rounded-card border border-line bg-bg shadow-card transition duration-300 hover:-translate-y-1.5"
-                >
-                  <h3 className="px-[18px] pb-3 pt-[18px] text-xl font-bold">
-                    {t(`services.items.${s.slug}.title`)}
-                  </h3>
-                  <div className="aspect-[4/3] overflow-hidden bg-surface">
-                    <img
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      src={s.images[0]}
-                      alt={altFor(s.dir, 0, lang)}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-[18px]">
-                    <p className="mb-3 text-[.92rem] text-muted">
-                      {t(`services.items.${s.slug}.list`).join(" – ")}
-                    </p>
-                    <span className="inline-flex items-center gap-1.5 font-bold text-brand-t">
-                      {t("cta.view")}{" "}
-                      <FiArrowRight className="rtl:-scale-x-100" />
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
+            {loading &&
+              [0, 1, 2, 3].map((i) => <Skel key={i} className="h-[340px]" />)}
+            {services.map((s, i) => {
+              const title = pick(s.title_ar, s.title_en, lang);
+              const cover = s.images[0];
+              return (
+                <Reveal key={s.slug} delay={i * 80} className="h-full">
+                  <Link
+                    to={`/services/${s.slug}`}
+                    className="group block h-full overflow-hidden rounded-card border border-line bg-bg shadow-card transition duration-300 hover:-translate-y-1.5"
+                  >
+                    <h3 className="px-[18px] pb-3 pt-[18px] text-xl font-bold">
+                      {title}
+                    </h3>
+                    <div className="aspect-[4/3] overflow-hidden bg-surface">
+                      {cover && (
+                        <img
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                          src={mediaUrl(cover.path)}
+                          alt={pick(cover.alt_ar, cover.alt_en, lang) || title}
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+                    <div className="p-[18px]">
+                      <p className="mb-3 text-[.92rem] text-muted">
+                        {lines(pick(s.items_ar, s.items_en, lang)).join(" – ")}
+                      </p>
+                      <span className="inline-flex items-center gap-1.5 font-bold text-brand-t">
+                        {t("cta.view")}{" "}
+                        <FiArrowRight className="rtl:-scale-x-100" />
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
-          <Btns t={t} />
+          <Btns t={t} contact={contact} />
         </div>
       </section>
 
+      {(loading || works.length > 0) && (
       <section id="portfolio" className={sec}>
         <div className={C}>
           <Head
@@ -157,14 +173,21 @@ export default function Home() {
             sub={t("works.sub")}
           />
 
+          {loading ? (
+            <div className="grid grid-cols-2 gap-5 px-10 sm:grid-cols-4 sm:px-12">
+              {[0, 1, 2, 3].map((i) => (
+                <Skel key={i} className="aspect-[4/5]" />
+              ))}
+            </div>
+          ) : (
           <div className="relative px-10 sm:px-12">
             <Swiper
-              key={lang}
+              key={`${lang}-${works.length}`}
               dir={lang === "ar" ? "rtl" : "ltr"}
               onSwiper={(s) => (swiperRef.current = s)}
               modules={[Autoplay, Keyboard]}
               keyboard
-              loop
+              loop={works.length > 8}
               slidesPerView={2}
               spaceBetween={16}
               autoplay={{
@@ -178,16 +201,16 @@ export default function Home() {
                 1000: { slidesPerView: 4, spaceBetween: 24 },
               }}
             >
-              {WORKS.map((src, i) => (
-                <SwiperSlide key={src}>
+              {works.map((w, i) => (
+                <SwiperSlide key={w.id}>
                   <button
                     className="group block aspect-[4/5] w-full overflow-hidden rounded-card bg-surface"
                     onClick={() => setLb(i)}
                   >
                     <img
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                      src={src}
-                      alt={altFor("works", i, lang)}
+                      src={workUrls[i]}
+                      alt={workAlts[i]}
                       loading={i < 3 ? "eager" : "lazy"}
                     />
                   </button>
@@ -213,15 +236,17 @@ export default function Home() {
               <FiChevronRight className="rtl:-scale-x-100 text-2xl" />
             </button>
           </div>
+          )}
 
           <Lightbox
-            items={WORKS}
+            items={workUrls}
             index={lb}
             setIndex={setLb}
-            alts={WORKS.map((_, i) => altFor("works", i, lang))}
+            alts={workAlts}
           />
         </div>
       </section>
+      )}
 
       <section id="process" className={`${sec} bg-surface`}>
         <div className={C}>
@@ -246,21 +271,25 @@ export default function Home() {
         <div className={C}>
           <Head k={t("rev.k")} title={t("rev.title")} />
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {t("rev.list").map((r, i) => (
-              <Reveal key={i} delay={(i % 3) * 80} className="h-full">
+            {loading &&
+              [0, 1, 2].map((i) => <Skel key={i} className="h-[150px]" />)}
+            {reviews.map((r, i) => (
+              <Reveal key={r.id} delay={(i % 3) * 80} className="h-full">
                 <figure className="relative h-full rounded-card border border-line bg-surface p-6">
                   <div
                     className="mb-3 flex gap-0.5 text-[#f5a623]"
-                    aria-label="5/5"
+                    aria-label={`${r.rating}/5`}
                   >
-                    {[...Array(5)].map((_, j) => (
+                    {[...Array(r.rating || 5)].map((_, j) => (
                       <FaStar key={j} />
                     ))}
                   </div>
                   <blockquote className="mb-3.5 text-[1.05rem]">
-                    {r.t}
+                    {pick(r.text_ar, r.text_en, lang)}
                   </blockquote>
-                  <figcaption className="font-bold">{r.n}</figcaption>
+                  <figcaption className="font-bold">
+                    {pick(r.name_ar, r.name_en, lang)}
+                  </figcaption>
                   <FaQuoteRight className="absolute bottom-[18px] end-5 text-3xl text-brand opacity-20" />
                 </figure>
               </Reveal>
@@ -279,7 +308,7 @@ export default function Home() {
           <Reveal>
             <h2 className={H2}>{t("band.title")}</h2>
             <p>{t("band.p")}</p>
-            <Btns t={t} band />
+            <Btns t={t} band contact={contact} />
           </Reveal>
         </div>
       </section>

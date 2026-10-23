@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { useApp } from "../i18n.jsx";
-import { waLink } from "../data.js";
+import { useSite } from "../context/SiteData.jsx";
 import { C, btnP } from "../ui.js";
 const IDS = [
   "home",
@@ -16,6 +16,7 @@ const ic =
   "grid h-[42px] w-[42px] place-items-center rounded-xl text-xl transition hover:bg-neutral-500/20";
 export default function Navbar() {
   const { t, theme, toggleLang, toggleTheme } = useApp();
+  const { contact } = useSite();
   const [scrolled, setScrolled] = useState(false),
     [open, setOpen] = useState(false),
     [active, setActive] = useState("home");
@@ -86,7 +87,7 @@ export default function Navbar() {
   const order = (c) => (
     <a
       className={`${btnP} ${c}`}
-      href={waLink(t("waMsg"))}
+      href={contact.wa(t("waMsg"))}
       target="_blank"
       rel="noopener noreferrer"
     >
