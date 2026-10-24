@@ -53,6 +53,7 @@ export default function Home() {
     (w, i) => pick(w.alt_ar, w.alt_en, lang) || `${t("works.alt")} ${i + 1}`,
   );
   const swiperRef = useRef(null);
+  const revSwiperRef = useRef(null);
 
   useEffect(() => {
     const autoplay = swiperRef.current?.autoplay;
@@ -292,31 +293,78 @@ export default function Home() {
       <section id="testimonials" className={sec}>
         <div className={C}>
           <Head k={t("rev.k")} title={t("rev.title")} />
-          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-            {loading &&
-              [0, 1, 2].map((i) => <Skel key={i} className="h-[150px]" />)}
-            {reviews.map((r, i) => (
-              <Reveal key={r.id} delay={(i % 3) * 80} className="h-full">
-                <figure className="relative h-full rounded-card border border-line bg-surface p-4 sm:p-6">
-                  <div
-                    className="mb-3 flex gap-0.5 text-sm text-[#f5a623] sm:text-base"
-                    aria-label={`${r.rating}/5`}
-                  >
-                    {[...Array(r.rating || 5)].map((_, j) => (
-                      <FaStar key={j} />
-                    ))}
-                  </div>
-                  <blockquote className="mb-3.5 text-[.9rem] sm:text-[1.05rem]">
-                    {pick(r.text_ar, r.text_en, lang)}
-                  </blockquote>
-                  <figcaption className="text-sm font-bold sm:text-base">
-                    {pick(r.name_ar, r.name_en, lang)}
-                  </figcaption>
-                  <FaQuoteRight className="absolute bottom-[18px] end-5 text-3xl text-brand opacity-20" />
-                </figure>
-              </Reveal>
-            ))}
-          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-1 gap-5 px-10 sm:grid-cols-2 sm:px-12 lg:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <Skel key={i} className="h-[150px]" />
+              ))}
+            </div>
+          ) : (
+            <div className="relative px-10 sm:px-12">
+              <Swiper
+                key={`rev-${lang}-${reviews.length}`}
+                dir={lang === "ar" ? "rtl" : "ltr"}
+                onSwiper={(s) => (revSwiperRef.current = s)}
+                modules={[Autoplay, Keyboard]}
+                keyboard
+                loop={reviews.length > 3}
+                slidesPerView={1}
+                spaceBetween={16}
+                autoHeight={false}
+                autoplay={{
+                  delay: 4000,
+                  pauseOnMouseEnter: true,
+                  disableOnInteraction: false,
+                }}
+                breakpoints={{
+                  700: { slidesPerView: 2, spaceBetween: 20 },
+                  1000: { slidesPerView: 3, spaceBetween: 24 },
+                }}
+                className="!items-stretch"
+              >
+                {reviews.map((r) => (
+                  <SwiperSlide key={r.id} className="!h-auto">
+                    <figure className="relative h-full rounded-card border border-line bg-surface p-5 sm:p-6">
+                      <div
+                        className="mb-3 flex gap-0.5 text-[#f5a623]"
+                        aria-label={`${r.rating}/5`}
+                      >
+                        {[...Array(r.rating || 5)].map((_, j) => (
+                          <FaStar key={j} />
+                        ))}
+                      </div>
+                      <blockquote className="mb-3.5 text-[1.05rem]">
+                        {pick(r.text_ar, r.text_en, lang)}
+                      </blockquote>
+                      <figcaption className="font-bold">
+                        {pick(r.name_ar, r.name_en, lang)}
+                      </figcaption>
+                      <FaQuoteRight className="absolute bottom-[18px] end-5 text-3xl text-brand opacity-20" />
+                    </figure>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+
+              <button
+                type="button"
+                aria-label={t("prev")}
+                onClick={() => revSwiperRef.current?.slidePrev()}
+                className="bg-brand text-white absolute start-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card duration-300 hover:bg-orange-700"
+              >
+                <FiChevronLeft className="rtl:-scale-x-100 text-2xl" />
+              </button>
+
+              <button
+                type="button"
+                aria-label={t("next")}
+                onClick={() => revSwiperRef.current?.slideNext()}
+                className="bg-brand text-white absolute end-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card duration-300 hover:bg-orange-700"
+              >
+                <FiChevronRight className="rtl:-scale-x-100 text-2xl" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
