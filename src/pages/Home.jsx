@@ -85,7 +85,7 @@ export default function Home() {
       #home {
         background-image:
           linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)),
-          url("/images/hero/hero-storefront-mobile.png");
+          url("/images/hero/hero-storefront-mobile.webp");
         background-size: auto 100%;
         background-position: center top;
       }
