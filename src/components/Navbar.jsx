@@ -102,7 +102,7 @@ export default function Navbar() {
         <div className={`${C} flex h-nav items-center justify-between gap-4`}>
           <Link to="/" aria-label={t("brand")} onClick={() => setOpen(false)}>
             <img
-              className="h-[55px] w-auto mt-2"
+              className="h-[70px] w-auto mt-2"
               src={`/images/logo/logo-${white ? "white" : "orange"}.png`}
               alt={t("brand")}
             />

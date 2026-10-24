@@ -49,7 +49,9 @@ export default function Home() {
     { services, works, reviews, loading, contact } = useSite(),
     [lb, setLb] = useState(null);
   const workUrls = works.map((w) => mediaUrl(w.path));
-  const workAlts = works.map((w, i) => pick(w.alt_ar, w.alt_en, lang) || `${t("works.alt")} ${i + 1}`);
+  const workAlts = works.map(
+    (w, i) => pick(w.alt_ar, w.alt_en, lang) || `${t("works.alt")} ${i + 1}`,
+  );
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -63,22 +65,44 @@ export default function Home() {
     <main>
       <section
         id="home"
-        className="relative flex min-h-svh scroll-mt-nav items-center overflow-hidden bg-cover bg-center text-white"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.75)),url(/images/hero/hero-storefront.jpg)",
-        }}
+        className="relative flex scroll-mt-nav items-center overflow-hidden text-white"
       >
+        <style>{`
+    #home {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background-color: #000;
+      background-image:
+        linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)),
+        url("/images/hero/hero-storefront.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 639px) {
+      #home {
+        background-image:
+          linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)),
+          url("/images/hero/hero-storefront-mobile.png");
+        background-size: auto 100%;
+        background-position: center top;
+      }
+    }
+  `}</style>
+
         <div
-          className={`${C} animate-up pb-20 pt-[calc(theme(spacing.nav)+24px)] motion-reduce:animate-none`}
+          className={`${C} animate-up md:pb-60 pb-0 pt-[calc(theme(spacing.nav)+24px)] motion-reduce:animate-none`}
         >
           <span className={`${kick} !text-[#ffb089]`}>{t("short")}</span>
-          <h1 className="mb-4 mt-3 text-[clamp(2rem,5vw,4rem)] font-extrabold leading-tight rtl:max-w-[16ch] ltr:max-w-[20ch]">
+
+          <h1 className="mb-4 mt-3 text-[clamp(1rem,4.5vw,4rem)] font-extrabold leading-tight whitespace-nowrap md:whitespace-normal md:max-w-[16ch] rtl:max-w-none md:rtl:max-w-[16ch] ltr:max-w-none md:ltr:max-w-[20ch]">
             {t("hero.title")}
           </h1>
-          <p className="max-w-[60ch] text-lg text-neutral-200">{t("hero.p")}</p>
+
           <Btns t={t} contact={contact} />
         </div>
+
         <a
           className="absolute inset-x-0 bottom-6 mx-auto grid h-11 w-11 animate-bob place-items-center text-2xl motion-reduce:animate-none"
           href="#about"
@@ -93,7 +117,6 @@ export default function Home() {
           <FiChevronDown />
         </a>
       </section>
-
       <section id="about" className={sec}>
         <div className={`${C}`}>
           <Reveal>
@@ -114,7 +137,6 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
-       
         </div>
       </section>
 
@@ -165,87 +187,87 @@ export default function Home() {
       </section>
 
       {(loading || works.length > 0) && (
-      <section id="portfolio" className={sec}>
-        <div className={C}>
-          <Head
-            k={t("works.k")}
-            title={t("works.title")}
-            sub={t("works.sub")}
-          />
+        <section id="portfolio" className={sec}>
+          <div className={C}>
+            <Head
+              k={t("works.k")}
+              title={t("works.title")}
+              sub={t("works.sub")}
+            />
 
-          {loading ? (
-            <div className="grid grid-cols-2 gap-5 px-10 sm:grid-cols-4 sm:px-12">
-              {[0, 1, 2, 3].map((i) => (
-                <Skel key={i} className="aspect-[4/5]" />
-              ))}
-            </div>
-          ) : (
-          <div className="relative px-10 sm:px-12">
-            <Swiper
-              key={`${lang}-${works.length}`}
-              dir={lang === "ar" ? "rtl" : "ltr"}
-              onSwiper={(s) => (swiperRef.current = s)}
-              modules={[Autoplay, Keyboard]}
-              keyboard
-              loop={works.length > 8}
-              slidesPerView={2}
-              spaceBetween={16}
-              autoplay={{
-                delay: 3500,
-                pauseOnMouseEnter: true,
-                disableOnInteraction: false,
-              }}
-              breakpoints={{
-                400: { slidesPerView: 2, spaceBetween: 20 },
-                700: { slidesPerView: 3, spaceBetween: 24 },
-                1000: { slidesPerView: 4, spaceBetween: 24 },
-              }}
-            >
-              {works.map((w, i) => (
-                <SwiperSlide key={w.id}>
-                  <button
-                    className="group block aspect-[4/5] w-full overflow-hidden rounded-card bg-surface"
-                    onClick={() => setLb(i)}
-                  >
-                    <img
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                      src={workUrls[i]}
-                      alt={workAlts[i]}
-                      loading={i < 3 ? "eager" : "lazy"}
-                    />
-                  </button>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {loading ? (
+              <div className="grid grid-cols-2 gap-5 px-10 sm:grid-cols-4 sm:px-12">
+                {[0, 1, 2, 3].map((i) => (
+                  <Skel key={i} className="aspect-[4/5]" />
+                ))}
+              </div>
+            ) : (
+              <div className="relative px-10 sm:px-12">
+                <Swiper
+                  key={`${lang}-${works.length}`}
+                  dir={lang === "ar" ? "rtl" : "ltr"}
+                  onSwiper={(s) => (swiperRef.current = s)}
+                  modules={[Autoplay, Keyboard]}
+                  keyboard
+                  loop={works.length > 8}
+                  slidesPerView={2}
+                  spaceBetween={16}
+                  autoplay={{
+                    delay: 3500,
+                    pauseOnMouseEnter: true,
+                    disableOnInteraction: false,
+                  }}
+                  breakpoints={{
+                    400: { slidesPerView: 2, spaceBetween: 20 },
+                    700: { slidesPerView: 3, spaceBetween: 24 },
+                    1000: { slidesPerView: 4, spaceBetween: 24 },
+                  }}
+                >
+                  {works.map((w, i) => (
+                    <SwiperSlide key={w.id}>
+                      <button
+                        className="group block aspect-[4/5] w-full overflow-hidden rounded-card bg-surface"
+                        onClick={() => setLb(i)}
+                      >
+                        <img
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                          src={workUrls[i]}
+                          alt={workAlts[i]}
+                          loading={i < 3 ? "eager" : "lazy"}
+                        />
+                      </button>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
 
-            <button
-              type="button"
-              aria-label={t("prev")}
-              onClick={() => swiperRef.current?.slidePrev()}
-              className="bg-brand text-white absolute start-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card  duration-300 hover:bg-orange-700"
-            >
-              <FiChevronLeft className="rtl:-scale-x-100 text-2xl" />
-            </button>
+                <button
+                  type="button"
+                  aria-label={t("prev")}
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  className="bg-brand text-white absolute start-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card  duration-300 hover:bg-orange-700"
+                >
+                  <FiChevronLeft className="rtl:-scale-x-100 text-2xl" />
+                </button>
 
-            <button
-              type="button"
-              aria-label={t("next")}
-              onClick={() => swiperRef.current?.slideNext()}
-              className="bg-brand text-white absolute end-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card duration-300 hover:bg-orange-700"
-            >
-              <FiChevronRight className="rtl:-scale-x-100 text-2xl" />
-            </button>
+                <button
+                  type="button"
+                  aria-label={t("next")}
+                  onClick={() => swiperRef.current?.slideNext()}
+                  className="bg-brand text-white absolute end-0 top-1/2 z-20 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white shadow-card duration-300 hover:bg-orange-700"
+                >
+                  <FiChevronRight className="rtl:-scale-x-100 text-2xl" />
+                </button>
+              </div>
+            )}
+
+            <Lightbox
+              items={workUrls}
+              index={lb}
+              setIndex={setLb}
+              alts={workAlts}
+            />
           </div>
-          )}
-
-          <Lightbox
-            items={workUrls}
-            index={lb}
-            setIndex={setLb}
-            alts={workAlts}
-          />
-        </div>
-      </section>
+        </section>
       )}
 
       <section id="process" className={`${sec} bg-surface`}>
@@ -270,24 +292,24 @@ export default function Home() {
       <section id="testimonials" className={sec}>
         <div className={C}>
           <Head k={t("rev.k")} title={t("rev.title")} />
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
             {loading &&
               [0, 1, 2].map((i) => <Skel key={i} className="h-[150px]" />)}
             {reviews.map((r, i) => (
               <Reveal key={r.id} delay={(i % 3) * 80} className="h-full">
-                <figure className="relative h-full rounded-card border border-line bg-surface p-6">
+                <figure className="relative h-full rounded-card border border-line bg-surface p-4 sm:p-6">
                   <div
-                    className="mb-3 flex gap-0.5 text-[#f5a623]"
+                    className="mb-3 flex gap-0.5 text-sm text-[#f5a623] sm:text-base"
                     aria-label={`${r.rating}/5`}
                   >
                     {[...Array(r.rating || 5)].map((_, j) => (
                       <FaStar key={j} />
                     ))}
                   </div>
-                  <blockquote className="mb-3.5 text-[1.05rem]">
+                  <blockquote className="mb-3.5 text-[.9rem] sm:text-[1.05rem]">
                     {pick(r.text_ar, r.text_en, lang)}
                   </blockquote>
-                  <figcaption className="font-bold">
+                  <figcaption className="text-sm font-bold sm:text-base">
                     {pick(r.name_ar, r.name_en, lang)}
                   </figcaption>
                   <FaQuoteRight className="absolute bottom-[18px] end-5 text-3xl text-brand opacity-20" />
