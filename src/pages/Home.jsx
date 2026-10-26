@@ -81,15 +81,22 @@ export default function Home() {
       background-repeat: no-repeat;
     }
 
-    @media (max-width: 639px) {
+
+    @media (max-width: 740px) {
       #home {
         background-image:
           linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.65)),
           url("/images/hero/hero-storefront-mobile.webp");
-        background-size: auto 100%;
+        background-size: auto 143%;
         background-position: center top;
       }
-    }
+      }
+      @media (max-width: 530px) {
+      #home{
+              background-size: auto 100%;
+
+      }
+      }
   `}</style>
 
         <div
