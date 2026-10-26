@@ -97,12 +97,12 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`py-[20px] fixed inset-x-0 top-0 z-50 transition duration-300 ${solid ? "bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] text-ink shadow-md backdrop-blur-md" : "text-white"}`}
+        className={`py-[9px] fixed inset-x-0 top-0 z-50 transition duration-300 ${solid ? "bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] text-ink shadow-md backdrop-blur-md" : "text-white"}`}
       >
         <div className={`${C} flex h-nav items-center justify-between gap-4`}>
           <Link to="/" aria-label={t("brand")} onClick={() => setOpen(false)}>
             <img
-              className="h-[90px] w-auto mt-2"
+              className="h-[85px] w-auto mt-2"
               src={`/images/logo/logo-${white ? "white" : "orange"}.png`}
               alt={t("brand")}
             />
