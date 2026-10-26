@@ -104,7 +104,7 @@ export default function Home() {
         >
           <span className={`${kick} !text-[#ffb089]`}>{t("short")}</span>
 
-          <h1 className="mb-4 mt-3 text-[clamp(1rem,4.5vw,4rem)] font-extrabold leading-tight whitespace-nowrap md:whitespace-normal md:max-w-[16ch] rtl:max-w-none md:rtl:max-w-[16ch] ltr:max-w-none md:ltr:max-w-[20ch]">
+          <h1 className="mb-4 mt-3 text-[clamp(1rem,4.5vw,4rem)] font-extrabold leading-tight whitespace-nowrap md:whitespace-normal md:max-w-[16ch] rtl:max-w-none md:rtl:max-w-[16ch] ltr:whitespace-normal md:ltr:max-w-[25ch]">
             {t("hero.title")}
           </h1>
 

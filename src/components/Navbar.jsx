@@ -97,7 +97,7 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition duration-300 ${solid ? "bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] text-ink shadow-md backdrop-blur-md" : "text-white"}`}
+        className={`py-1.5 fixed inset-x-0 top-0 z-50 transition duration-300 ${solid ? "bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] text-ink shadow-md backdrop-blur-md" : "text-white"}`}
       >
         <div className={`${C} flex h-nav items-center justify-between gap-4`}>
           <Link to="/" aria-label={t("brand")} onClick={() => setOpen(false)}>
