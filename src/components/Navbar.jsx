@@ -4,16 +4,6 @@ import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { useApp } from "../i18n.jsx";
 import { useSite } from "../context/SiteData.jsx";
 import { C, btnP } from "../ui.js";
-const LogoIcon = ({ className = "w-16 h-16" }) => (
-  <svg viewBox="0 0 48 48" fill="none" className={className}>
-    <path
-      d="M43 24C43 12 36 5 24 5H9Q5 5 5 9V39Q5 43 9 43H39Q43 43 43 39Z"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 const IDS = [
   "home",
   "about",
@@ -84,11 +74,7 @@ export default function Navbar() {
         aria-pressed={dark}
         aria-label={dark ? t("tip.light") : t("tip.dark")}
       >
-        {dark ? (
-          <FiSun className="text-[25px]" />
-        ) : (
-          <FiMoon className="text-[25px]" />
-        )}
+        {dark ? <FiSun className="text-[25px]" /> : <FiMoon className="text-[25px]" />}
       </button>
       <button
         className={`${ic} w-auto px-2.5 text-[2rem] font-bold`}
@@ -114,17 +100,12 @@ export default function Navbar() {
         className={`py-[20px] fixed inset-x-0 top-0 z-50 transition duration-300 ${solid ? "bg-[color-mix(in_srgb,var(--bg)_90%,transparent)] text-ink shadow-md backdrop-blur-md" : "text-white"}`}
       >
         <div className={`${C} flex h-nav items-center justify-between gap-4`}>
-          <Link
-            to="/"
-            aria-label={t("brand")}
-            onClick={() => setOpen(false)}
-            className={`flex items-center gap-2 ${white ? "text-white" : "text-orange-500"}`}
-          >
-            <LogoIcon />
-            <div className="leading-8 text-[22px] font-bold">
-              <div>مربع الفكرة</div>
-              <div>للدعاية والإعلان</div>
-            </div>
+          <Link to="/" aria-label={t("brand")} onClick={() => setOpen(false)}>
+            <img
+              className="h-[90px] w-auto mt-2"
+              src={`/images/logo/logo-${white ? "white" : "orange"}.png`}
+              alt={t("brand")}
+            />
           </Link>
           <nav className="hidden gap-5 lg:flex">
             {IDS.map((id) => link(id, "border-b-2 py-1"))}
@@ -138,11 +119,7 @@ export default function Navbar() {
               aria-label={t("tip.menu")}
               onClick={() => setOpen(!open)}
             >
-              {open ? (
-                <FiX className="text-[28px]" />
-              ) : (
-                <FiMenu className="text-[28px]" />
-              )}
+              {open ? <FiX className="text-[28px]"/> : <FiMenu className="text-[28px]"/>}
             </button>
           </div>
         </div>
