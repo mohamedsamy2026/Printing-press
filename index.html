@@ -3,21 +3,70 @@
 
 <head>
     <meta charset="UTF-8" />
+
+    <!-- Google tag - murbalifkra -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16762215240"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-16762215240');
+
+        // تتبع نقرات الاتصال والواتساب
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest && e.target.closest('a');
+            if (!a) return;
+
+            var href = a.getAttribute('href') || '';
+
+            if (href.indexOf('tel:') === 0) {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-16762215240/2sj3CNX61LUdEMi27Lg-'
+                });
+            } else if (/wa\.me|api\.whatsapp\.com/.test(href)) {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-16762215240/xrJGCNj61LUdEMi27Lg-'
+                });
+            }
+        }, true);
+    </script>
+    <!-- End Google tag -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+
     <title>مربع الفكرة للدعاية والإعلان | طباعة ودعاية وإعلان</title>
+
     <meta name="description"
         content="نطبع أفكارك بجودة ترى وتدوم. ورقيات، استيكرات، إكريليك ولوحات إعلانية. تواصل معنا الآن." />
+
     <meta property="og:title" content="مربع الفكرة للدعاية والإعلان" />
     <meta property="og:description" content="نطبع أفكارك بجودة ترى وتدوم." />
     <meta property="og:image" content="/images/og/og-1200x630.jpg" />
+
     <link rel="icon" href="/images/logo/logo-orange.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
-    <script>(function () { try { var d = document.documentElement, t = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'), l = localStorage.getItem('lang') || 'ar'; d.dataset.theme = t; d.lang = l; d.dir = l === 'ar' ? 'rtl' : 'ltr' } catch (e) { } })()</script>
+
+    <script>
+        (function () {
+            try {
+                var d = document.documentElement,
+                    t = localStorage.getItem('theme') ||
+                        (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'),
+                    l = localStorage.getItem('lang') || 'ar';
+
+                d.dataset.theme = t;
+                d.lang = l;
+                d.dir = l === 'ar' ? 'rtl' : 'ltr';
+            } catch (e) { }
+        })();
+    </script>
 </head>
 
 <body>

@@ -221,7 +221,7 @@ export default function Home() {
                   slidesPerView={2}
                   spaceBetween={16}
                   autoplay={{
-                    delay: 3500,
+                    delay: 3000,
                     pauseOnMouseEnter: true,
                     disableOnInteraction: false,
                   }}
