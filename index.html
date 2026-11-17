@@ -12,26 +12,51 @@
         gtag('js', new Date());
         gtag('config', 'AW-16762215240');
 
-        // تتبع نقرات الاتصال والواتساب
-        document.addEventListener('click', function (e) {
-            var a = e.target.closest && e.target.closest('a');
-            if (!a) return;
+        // تتبع نقرات الاتصال والواتساب المؤهلة فقط (بعد 20 ثانية في الصفحة)
+        (function () {
+            var MIN_SECONDS = 20;
+            var WA_TEXT = 'السلام عليكم، أبغى عرض سعر طباعة';
+            var visibleMs = 0;
+            var lastStart = document.visibilityState === 'visible' ? Date.now() : null;
+            var sent = { call: false, wa: false };
 
-            var href = a.getAttribute('href') || '';
+            document.addEventListener('visibilitychange', function () {
+                if (document.visibilityState === 'visible') {
+                    lastStart = Date.now();
+                } else if (lastStart) {
+                    visibleMs += Date.now() - lastStart;
+                    lastStart = null;
+                }
+            });
 
-            if (href.indexOf('tel:') === 0) {
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-16762215240/2sj3CNX61LUdEMi27Lg-'
-                });
-            } else if (/wa\.me|api\.whatsapp\.com/.test(href)) {
-                gtag('event', 'conversion', {
-                    'send_to': 'AW-16762215240/xrJGCNj61LUdEMi27Lg-'
-                });
+            function secondsOnPage() {
+                return (visibleMs + (lastStart ? Date.now() - lastStart : 0)) / 1000;
             }
-        }, true);
+
+            document.addEventListener('click', function (e) {
+                var a = e.target.closest && e.target.closest('a');
+                if (!a) return;
+                var href = a.getAttribute('href') || '';
+                var type = href.indexOf('tel:') === 0 ? 'call'
+                    : /wa\.me|api\.whatsapp\.com/.test(href) ? 'wa' : null;
+                if (!type) return;
+
+                if (type === 'wa') {
+                    a.setAttribute('href', 'https://wa.me/966549920567?text=' + encodeURIComponent(WA_TEXT));
+                }
+
+                if (sent[type] || secondsOnPage() < MIN_SECONDS) return;
+                sent[type] = true;
+                gtag('event', 'conversion', {
+                    'send_to': type === 'call'
+                        ? 'AW-16762215240/2sj3CNX61LUdEMi27Lg-'
+                        : 'AW-16762215240/xrJGCNj61LUdEMi27Lg-',
+                    'transport_type': 'beacon'
+                });
+            }, true);
+        })();
     </script>
     <!-- End Google tag -->
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
 
